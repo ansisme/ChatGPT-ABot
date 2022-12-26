@@ -95,7 +95,7 @@ const handleSubmit = async(e) => {
                 prompt: data.get('prompt')
             })
         })
-        clearInterval(loadinterval);
+        clearInterval(loadInterval);
         messageDiv.innerHTML = "";
 
         if (response.ok) {
