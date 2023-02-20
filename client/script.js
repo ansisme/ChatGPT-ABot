@@ -3,18 +3,19 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chat_container = document.querySelector('#chat_container');
-
 let loadInterval;
-//robot loading the 3 dots and soona s the 3 dots are reached
+//robot loading the 3 dots and soon as the 3 dots are reached
 //it is reset to empty string and goes on
+
 function loader(element) {
-    element.textContent = " ";
+    element.textContent = "";
     loadInterval = setInterval(() => {
         element.textContent += ".";
 
 
         if (element.textContent === "...") {
             element.textContent = "";
+            console.log(element);
         }
     }, 300);
 }
@@ -25,21 +26,24 @@ function typeText(element, text) {
     let i = 0;
     //setInterval is the built-in function 
     //clearInterval is used to stop the interval
-    let interval = setInterval(function() {
-        element.innerHTML += text.charAt(i);
-        i++;
-        if (i == text.length) {
+    let interval = setInterval(() => {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+
+        } else {
             clearInterval(interval);
         }
-    }, 20);
+        console.log(element.innerHTML);
+    }, 1000);
 }
 
 function generateUniqueID() {
-    const timestamp = Date.now();
+    // const timestamp = Date.now();
     const randomNumber = Math.random();
     const hexa = randomNumber.toString(16);
 
-    return `id-${timestamp} -${hexa}`;
+    return `id-${hexa}`;
 }
 
 
@@ -81,7 +85,13 @@ const handleSubmit = async(e) => {
         chat_container.innerHTML += chatStripe(true, ' ', uniqueID);
         chat_container.scrollTop = chat_container.scrollHeight;
         const messageDiv = document.getElementById(uniqueID);
-        loader(messageDiv);
+        if (messageDiv) {
+            loader(messageDiv);
+            // rest of the Promise code...
+        } else {
+            console.error(`Element with ID ${uniqueID} not found in DOM`);
+        }
+
 
 
 
@@ -101,7 +111,7 @@ const handleSubmit = async(e) => {
         if (response.ok) {
             const data = await response.json();
             const parseddata = data.bot.trim();
-
+            console.log({ parseddata });
             typeText(messageDiv, parseddata);
 
         } else {
@@ -117,7 +127,7 @@ form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
     //enter keyboard key on which the handlesubmit button wuill be called
     //and the message will be sent
-    if (e.keycode === 13) {
+    if (e.keycode === 'Enter') {
         handleSubmit(e)
     }
 })
