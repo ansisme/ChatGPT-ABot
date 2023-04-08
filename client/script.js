@@ -91,9 +91,9 @@ const handleSubmit = async(e) => {
         } else {
             console.error(`Element with ID ${uniqueID} not found in DOM`);
         }
-        //https://abot-b.onrender.com/
+        //https://abot-bgfl.onrender.com
         //FETCHING DATA FROM SERVER AS A BOT'S RESPONSE 
-        const response = await fetch('http://localhost:5000', {
+        const response = await fetch('https://abot-bgfl.onrender.com', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
